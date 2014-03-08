@@ -27,9 +27,24 @@ firewall_ids.py
 	
 	
 or
-	for each ip
-		count # within timelimit
-		if > y
+
+Calculate cutoff time
+var ip
+var count
+
+for each line
+	compare ip to lineip
+	if not equal // perform actions on old ip var
+		if count > 3
 			add/confirm IP in iptables
 		else
 			remove/confirm IP not in iptables
+		//reset vars to new values
+		ip = lineip
+		count = 0
+	else if linetime within timelimit
+		increment count
+			
+			
+			
+			
