@@ -1,0 +1,11 @@
+Run scan_secure.sh script every 30 seconds
+
+In scan_secure script
+	Read log or IP->Epoch Timestamp file
+	If the IP attempts are greater than user-input value
+		Block IP via iptables
+	If the (current time - IP latest failed log in attempt) is greater than 30 seconds
+		Unblock IP via iptables
+		Set the current IP timestamp to the latest epoch time and store in a file
+	If IP is already blocked
+		Print already denied IP
