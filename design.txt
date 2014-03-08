@@ -9,3 +9,20 @@ In scan_secure script
 		Set the current IP timestamp to the latest epoch time and store in a file
 	If IP is already blocked
 		Print already denied IP
+
+ignore scan_secure.
+
+ids.Py script
+	looks good, may want to sort IP_list. (can use sort command)
+	
+firewall_ids.py
+	using timestamps within x time:
+		count # for each ip
+		if count > y
+			add to iptables
+		else
+			remove/make sure not in iptables
+	find in list ip's without timestamps within x time
+		remove from iptables
+	
+	
