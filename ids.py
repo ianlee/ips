@@ -13,11 +13,17 @@ def parseDate(line):
 def parseIP(line):
 	tokens = re.split('  | |\n', line)
 	return tokens[10]
-	
-for line in open("/var/log/secure"):
-	if "sshd" and "Failed password for" in line:
-		date = parseDate(line)
-		IP = parseIP(line)
-		print IP, date
 
-os.system("sh scan_secure.sh")
+IP_list = open("IP_list.txt", "w")
+
+with open("/var/log/secure") as fsecure:
+	for line in fsecure:
+		if "sshd" and "Failed password for" in line:
+			date = parseDate(line)
+			IP = parseIP(line)
+			print IP, date
+			IP_list.write(IP + " " + date + "\n")
+
+IP_list.close()
+
+#os.system("sh scan_secure.sh")
