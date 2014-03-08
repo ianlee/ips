@@ -26,3 +26,10 @@ firewall_ids.py
 		remove from iptables
 	
 	
+or
+	for each ip
+		count # within timelimit
+		if > y
+			add/confirm IP in iptables
+		else
+			remove/confirm IP not in iptables
