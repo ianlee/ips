@@ -38,13 +38,18 @@ for each line
 		if count > 3
 			add/confirm IP in iptables
 		else
+			//potentially can check vs different cutoff time for removal of block time
+			//check vs current line's time stamp
 			remove/confirm IP not in iptables
+			
+			
 		//reset vars to new values
 		ip = lineip
 		count = 0
-	else if linetime within timelimit
+	
+	if linetime within timelimit  //not else
 		increment count
-			
+	
 			
 			
 			
