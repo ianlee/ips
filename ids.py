@@ -1,11 +1,23 @@
 import time
+from datetime import datetime
 import re
+import os
 
+def parseDate(line):
+	tokens = re.split('  | |\n', line)
+	date_format = ' '.join(tokens[0:3]) + " " + str(datetime.now().year)
+	the_date = str(int(time.mktime(time.strptime(date_format,'%b %d %H:%M:%S %Y'))))
+	return the_date
+
+
+def parseIP(line):
+	tokens = re.split('  | |\n', line)
+	return tokens[10]
+	
 for line in open("/var/log/secure"):
 	if "Failed password for" in line:
-		tokens = re.split('  | |\n', line)
-		date_str = ' '.join(tokens[0:3])
-		date_format = date_str + " 2014"
-		the_date = str(int(time.mktime(time.strptime(date_format,'%b %d %H:%M:%S %Y'))))
-		list_of_clients = tokens[10] + ' ' + the_date
-		print list_of_clients
+		date = parseDate(line)
+		IP = parseIP(line)
+		print IP, date
+
+
