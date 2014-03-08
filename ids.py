@@ -15,9 +15,9 @@ def parseIP(line):
 	return tokens[10]
 	
 for line in open("/var/log/secure"):
-	if "Failed password for" in line:
+	if "sshd" and "Failed password for" in line:
 		date = parseDate(line)
 		IP = parseIP(line)
 		print IP, date
 
-
+os.system("sh scan_secure.sh")

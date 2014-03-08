@@ -17,7 +17,7 @@ do
 	/sbin/iptables -L -n | grep $ip > /dev/null
 	if [ $? -eq 0 ] ; then
 		echo "already denied ip: [$ip]" ;
-		true	
+		true
 	else
 		echo "Subject: denying ip: $ip";
 		logger -p authpriv.notice "*** Blocking SSH attempt from: $ip"
