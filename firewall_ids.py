@@ -57,4 +57,4 @@ with open("IP_list.txt", "r") as IP_list:
 			count += 1
 		currentIP = nextIP
 
-processLastHostOnList(currentIP, int(count), int(cutoffTime))
+processLastHostOnList(currentIP, count, cutoffTime)
