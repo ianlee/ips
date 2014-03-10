@@ -37,7 +37,7 @@ cutoffTime = 3600 # 60 minutes
 count = 0
 currentIP = linecache.getline("IP_list.txt", 1)
 
-with open("IP_list.txt", "r") as IP_list:
+with open(os.path.dirname(os.path.realpath(__file__))+"/IP_list.txt", "r") as IP_list:
 	nextIP = IP_list.readline()
 	
 	for nextIP in IP_list:
