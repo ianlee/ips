@@ -28,7 +28,7 @@ def processLastHostOnList(host, count, cutoffTime):
 	if not timeExpired(int(IP[1]), cutoffTime):
 		count += 1
 	#print "Last Host: ", IP[0], "Count: ", count
-	if count > 4 and not timeExpired(int(IP[0]), cutoffTime):
+	if count > 4 and not timeExpired(int(IP[1]), cutoffTime):
 		appendFirewallRule(IP[0])
 	else:
 		removeFirewallRule(IP[0])
