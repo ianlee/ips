@@ -2,6 +2,7 @@ import time
 from datetime import datetime
 import re
 from operator import itemgetter
+import firewall_ids
 
 def parseDate(line):
 	tokens = re.split('  | |\n', line)

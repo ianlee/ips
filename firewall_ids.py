@@ -4,7 +4,7 @@ import time
 import subprocess, os
 
 def timeExpired(epoch, cutoffTime):
-	return True if(int(datetime.now().strftime("%s")) - epoch > cutoffTime) else False 
+	return True if(cutoffTime==0 or int(datetime.now().strftime("%s")) - epoch > cutoffTime) else False 
 
 def appendFirewallRule(host):
 	notFound = subprocess.Popen("iptables-save | grep -q %s; echo $?" % host, shell=True, stdout=subprocess.PIPE).communicate()[0]
@@ -28,12 +28,13 @@ def processLastHostOnList(host, count, cutoffTime):
 	if not timeExpired(int(IP[1]), cutoffTime):
 		count += 1
 	#print "Last Host: ", IP[0], "Count: ", count
-	if count > 4 and not timeExpired(int(IP[1]), cutoffTime):
+	if count > 3 and not timeExpired(int(IP[1]), cutoffTime):
 		appendFirewallRule(IP[0])
 	else:
 		removeFirewallRule(IP[0])
 
-cutoffTime = 3600 # 60 minutes
+cutoffTime = (2*60) # 2 minutes
+defaultTime = (10*60) # 10 minutes
 count = 0
 currentIP = linecache.getline("IP_list.txt", 1)
 
@@ -47,10 +48,11 @@ with open("IP_list.txt", "r") as IP_list:
 			if not timeExpired(int(cIP[1]), cutoffTime):
 				count += 1
 			#print "Host: ", cIP[0], "Count: ", count
-			if count > 4 and not timeExpired(int(cIP[1]), cutoffTime):
+			if count > 3 and not timeExpired(int(cIP[1]), cutoffTime):
 				appendFirewallRule(cIP[0])
 			else:
-				removeFirewallRule(cIP[0])
+				if timeExpired(int(cIP[1]), defaultTime):
+					removeFirewallRule(cIP[0])
 			cIP = nIP
 			count = 0
 		if not timeExpired(int(cIP[1]), cutoffTime):
