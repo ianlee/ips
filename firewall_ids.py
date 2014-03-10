@@ -3,6 +3,8 @@ from datetime import datetime
 import time
 import subprocess, os
 
+filepath = os.path.dirname(os.path.realpath(__file__))+"/IP_list.txt"
+
 def timeExpired(epoch, cutoffTime):
 	return True if(cutoffTime==0 or int(datetime.now().strftime("%s")) - epoch > cutoffTime) else False 
 
@@ -36,9 +38,13 @@ def processLastHostOnList(host, count, cutoffTime):
 cutoffTime = (2*60) # 2 minutes
 defaultTime = (10*60) # 10 minutes
 count = 0
-currentIP = linecache.getline("IP_list.txt", 1)
+currentIP = linecache.getline(filepath, 1)
 
-with open(os.path.dirname(os.path.realpath(__file__))+"/IP_list.txt", "r") as IP_list:
+if os.path.getsize(filepath) == 0:
+	print "IP_list.txt is empty"
+	exit()
+
+with open(filepath, "r") as IP_list:
 	nextIP = IP_list.readline()
 	
 	for nextIP in IP_list:
