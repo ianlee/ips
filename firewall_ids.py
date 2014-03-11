@@ -6,11 +6,11 @@ import subprocess, os
 filepath = os.path.dirname(os.path.realpath(__file__))+"/IP_list.txt"	
 
 def setCutOffTime():
-	return linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 1).split()[2]
+	return int(linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 1).split()[2]) * 60
 def setDefaultTime():
-	return linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 2).split()[2]
+	return int(linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 2).split()[2]) * 60
 def setLimit():
-	return linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 3).split()[2]
+	return int(linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 3).split()[2])
 
 def timeExpired(epoch, cutoffTime):
 	return True if(cutoffTime==0 or int(datetime.now().strftime("%s")) - epoch > cutoffTime) else False 
