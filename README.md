@@ -1,4 +1,0 @@
-ips
-===
-
-intrusion detection system.
