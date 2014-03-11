@@ -11,6 +11,8 @@ def setDefaultTime():
 	return int(linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 2).split()[2]) * 60
 def setLimit():
 	return int(linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 3).split()[2])
+def setTotalLimit():
+	return int(linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 4).split()[2])
 
 def timeExpired(epoch, cutoffTime):
 	return True if(cutoffTime==0 or int(datetime.now().strftime("%s")) - epoch > cutoffTime) else False 
@@ -46,6 +48,8 @@ cutoffTime = setCutOffTime()
 defaultTime = setDefaultTime()
 limit = setLimit()
 count = 0
+totalLimit = setTotalLimit()
+totalCount = 0
 
 if os.path.getsize(filepath) == 0:
 	print "IP_list.txt is empty"
@@ -53,6 +57,7 @@ if os.path.getsize(filepath) == 0:
 
 with open(filepath, "r") as IP_list:
 	nextIP = IP_list.readline()
+	totalCount +=1
 	currentIP = nextIP
 	for nextIP in IP_list:
 		cIP = currentIP.split()
@@ -63,12 +68,16 @@ with open(filepath, "r") as IP_list:
 			if count >= limit and not timeExpired(int(cIP[1]), cutoffTime):
 				appendFirewallRule(cIP[0])
 			else:
-				if timeExpired(int(cIP[1]), defaultTime):
+				if totalCount > totalLimit:
+					appendFirewallRule(cIP[0])
+				elif timeExpired(int(cIP[1]), defaultTime):
 					removeFirewallRule(cIP[0])
 			cIP = nIP
 			count = 0
+			totalCount = 0
 		if not timeExpired(int(cIP[1]), cutoffTime):
 			count += 1
 		currentIP = nextIP
+		totalCount +=1
 
 processLastHostOnList(currentIP, count, cutoffTime, limit)
