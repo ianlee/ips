@@ -37,7 +37,7 @@ def processLastHostOnList(host, count, cutoffTime, limit):
 	if not timeExpired(int(IP[1]), cutoffTime):
 		count += 1
 	#print "Last Host: ", IP[0], "Count: ", count
-	if count > limit and not timeExpired(int(IP[1]), cutoffTime):
+	if count >= limit and not timeExpired(int(IP[1]), cutoffTime):
 		appendFirewallRule(IP[0])
 	else:
 		removeFirewallRule(IP[0])
@@ -60,7 +60,7 @@ with open(filepath, "r") as IP_list:
 		if cIP[0] != nIP[0]:
 			if not timeExpired(int(cIP[1]), cutoffTime):
 				count += 1
-			if count > limit and not timeExpired(int(cIP[1]), cutoffTime):
+			if count >= limit and not timeExpired(int(cIP[1]), cutoffTime):
 				appendFirewallRule(cIP[0])
 			else:
 				if timeExpired(int(cIP[1]), defaultTime):
