@@ -1,6 +1,6 @@
 #!/bin/bash
 sed -i '/ids.py/d' /etc/crontab 
-if [$1 !=""]; then
+if [ "$1" == "stop" ]; then
   return 0
 fi
 
