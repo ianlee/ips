@@ -62,21 +62,23 @@ with open(filepath, "r") as IP_list:
 	#nextIP = IP_list.readline()
 	#totalCount +=1
 	#currentIP = nextIP
-	prevIP=NULL
+	prevIP=-1
+	
 	for currentIP in IP_list:
-		if prevIP!=NULL:
-			cIP = currentIP.split()
+		cIP = currentIP.split()
+		if prevIP!=-1:
 			pIP = prevIP.split()
 			if cIP[0] != pIP[0]:
 			#	if not timeExpired(int(cIP[1]), cutoffTime):
 			#		count += 1
-				if count >= limit and not timeExpired(int(cIP[1]), cutoffTime):
-					appendFirewallRule(cIP[0])
+				if count >= limit and not timeExpired(int(pIP[1]), cutoffTime):
+					appendFirewallRule(pIP[0])
 				else:
+					print "total count:" , totalCount , " ip: ",pIP[0]
 					if totalCount > totalLimit:
-						appendFirewallRule(cIP[0])
-					elif timeExpired(int(cIP[1]), defaultTime):
-						removeFirewallRule(cIP[0])
+						appendFirewallRule(pIP[0])
+					elif timeExpired(int(pIP[1]), defaultTime):
+						removeFirewallRule(pIP[0])
 				
 				count = 0
 				totalCount = 0
