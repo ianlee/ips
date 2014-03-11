@@ -34,7 +34,7 @@ def removeFirewallRule(host):
 		os.system('iptables -D INPUT -s %s -j DROP' % host)
 		print "Host ", host, " dropped in iptables"
 
-def processLastHostOnList(host, count, cutoffTime, limit):
+def processLastHostOnList(host, count, cutoffTime, limit, totalCount, totalLimit):
 	IP = host.split()
 	if not timeExpired(int(IP[1]), cutoffTime):
 		count += 1
@@ -42,7 +42,10 @@ def processLastHostOnList(host, count, cutoffTime, limit):
 	if count >= limit and not timeExpired(int(IP[1]), cutoffTime):
 		appendFirewallRule(IP[0])
 	else:
-		removeFirewallRule(IP[0])
+		if totalCount > totalLimit:
+			appendFirewallRule(IP[0])
+		elif timeExpired(int(IP[1]), defaultTime):
+			removeFirewallRule(IP[0])
 
 cutoffTime = setCutOffTime()
 defaultTime = setDefaultTime()
@@ -80,4 +83,4 @@ with open(filepath, "r") as IP_list:
 		currentIP = nextIP
 		totalCount +=1
 
-processLastHostOnList(currentIP, count, cutoffTime, limit)
+processLastHostOnList(currentIP, count, cutoffTime, limit, totalCount, totalLimit)
