@@ -3,7 +3,14 @@ from datetime import datetime
 import time
 import subprocess, os
 
-filepath = os.path.dirname(os.path.realpath(__file__))+"/IP_list.txt"
+filepath = os.path.dirname(os.path.realpath(__file__))+"/IP_list.txt"	
+
+def setCutOffTime():
+	return linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 1).split()[2]
+def setDefaultTime():
+	return linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 2).split()[2]
+def setLimit():
+	return linecache.getline(os.path.dirname(os.path.realpath(__file__))+"/config.txt", 3).split()[2]
 
 def timeExpired(epoch, cutoffTime):
 	return True if(cutoffTime==0 or int(datetime.now().strftime("%s")) - epoch > cutoffTime) else False 
@@ -25,20 +32,20 @@ def removeFirewallRule(host):
 		os.system('iptables -D INPUT -s %s -j DROP' % host)
 		print "Host ", host, " dropped in iptables"
 
-def processLastHostOnList(host, count, cutoffTime):
+def processLastHostOnList(host, count, cutoffTime, limit):
 	IP = host.split()
 	if not timeExpired(int(IP[1]), cutoffTime):
 		count += 1
 	#print "Last Host: ", IP[0], "Count: ", count
-	if count > 3 and not timeExpired(int(IP[1]), cutoffTime):
+	if count > limit and not timeExpired(int(IP[1]), cutoffTime):
 		appendFirewallRule(IP[0])
 	else:
 		removeFirewallRule(IP[0])
 
-cutoffTime = (2*60) # 2 minutes
-defaultTime = (10*60) # 10 minutes
+cutoffTime = setCutOffTime()
+defaultTime = setDefaultTime()
+limit = setLimit()
 count = 0
-currentIP = linecache.getline(filepath, 1)
 
 if os.path.getsize(filepath) == 0:
 	print "IP_list.txt is empty"
@@ -46,15 +53,14 @@ if os.path.getsize(filepath) == 0:
 
 with open(filepath, "r") as IP_list:
 	nextIP = IP_list.readline()
-	
+	currentIP = nextIP
 	for nextIP in IP_list:
 		cIP = currentIP.split()
 		nIP = nextIP.split()
 		if cIP[0] != nIP[0]:
 			if not timeExpired(int(cIP[1]), cutoffTime):
 				count += 1
-			#print "Host: ", cIP[0], "Count: ", count
-			if count > 3 and not timeExpired(int(cIP[1]), cutoffTime):
+			if count > limit and not timeExpired(int(cIP[1]), cutoffTime):
 				appendFirewallRule(cIP[0])
 			else:
 				if timeExpired(int(cIP[1]), defaultTime):
@@ -65,4 +71,4 @@ with open(filepath, "r") as IP_list:
 			count += 1
 		currentIP = nextIP
 
-processLastHostOnList(currentIP, count, cutoffTime)
+processLastHostOnList(currentIP, count, cutoffTime, limit)
