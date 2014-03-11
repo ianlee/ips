@@ -6,4 +6,4 @@ fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
 
-echo "*/2 * * * * root python $DIR/ids.py " >> /etc/crontab
+echo "* * * * * root python $DIR/ids.py " >> /etc/crontab

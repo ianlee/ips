@@ -36,9 +36,6 @@ def removeFirewallRule(host):
 
 def processLastHostOnList(host, count, cutoffTime, limit, totalCount, totalLimit):
 	IP = host.split()
-#	if not timeExpired(int(IP[1]), cutoffTime):
-	#	count += 1
-	#print "Last Host: ", IP[0], "Count: ", count
 	if count >= limit and not timeExpired(int(IP[1]), cutoffTime):
 		appendFirewallRule(IP[0])
 	else:
@@ -59,9 +56,6 @@ if os.path.getsize(filepath) == 0:
 	exit()
 
 with open(filepath, "r") as IP_list:
-	#nextIP = IP_list.readline()
-	#totalCount +=1
-	#currentIP = nextIP
 	prevIP=-1
 	
 	for currentIP in IP_list:
@@ -69,8 +63,6 @@ with open(filepath, "r") as IP_list:
 		if prevIP!=-1:
 			pIP = prevIP.split()
 			if cIP[0] != pIP[0]:
-			#	if not timeExpired(int(cIP[1]), cutoffTime):
-			#		count += 1
 				if count >= limit and not timeExpired(int(pIP[1]), cutoffTime):
 					appendFirewallRule(pIP[0])
 				else:

@@ -1,4 +1,4 @@
-CUTOFF_TIME = 5 (* 60) (specified in minutes) #time period to check
-DEFAULT_TIME = 10 (* 60) (specified in minutes) #length of ban
+CUTOFF_TIME = 5 (specified in minutes) # time period to check
+DEFAULT_TIME = 10 (specified in minutes) # length of ban
 LIMIT = 3 # number of attempts within time period to be banned temporarily
 TOTAL_LIMIT = 25 # number of attempts to be banned permanently
