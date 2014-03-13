@@ -118,7 +118,7 @@ def removeFirewallRule(host):
 #							totalLimit	- number of attempts for perma bans
 #							defaultTime	- ban length
 # Returns: 		N/A
-# Notes:		duplicate code from inside loop. should have loop call this function instead
+# Notes:		
 #####################################################################################
 def processLastHostOnList(host, count, cutoffTime, limit, totalCount, totalLimit, defaultTime):
 	IP = host.split()
